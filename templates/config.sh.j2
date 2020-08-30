@@ -3,7 +3,6 @@ source .env
 
 ESXI_SERVER={{ esxi.ipaddr }}
 OPENSTACKNODE={{ vm.openstack.ipaddr }}
-INSTALL_DIR={{ installdir }}
 LOCAL_IP={{ ansible_default_ipv4["address"] }}
 
 docker build  . -t openstack-builder
