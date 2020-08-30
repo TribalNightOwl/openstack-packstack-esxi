@@ -1,0 +1,15 @@
+---
+- hosts: esxi
+  tasks:
+  - include_vars:
+      file: vars.yaml
+
+  - name: Expose hardware assisted virtualization to guest OS
+    lineinfile:
+      path: "{{ vmxfile }}"
+      line: vhv.enable = "TRUE"
+
+  - name: reload VMX file
+    shell: |
+      VMID=$(vim-cmd vmsvc/getallvms|grep {{ vm.openstack.name }} | cut -f1 -d ' ')
+      vim-cmd vmsvc/reload $VMID

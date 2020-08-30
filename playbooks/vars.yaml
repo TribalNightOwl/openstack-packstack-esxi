@@ -1,0 +1,17 @@
+vmxfile: /vmfs/volumes/alldisks/openstack/openstack.vmx
+isofile: /vmfs/volumes/alldisks/iso/CentOS-8.2.2004-x86_64-minimal.iso
+
+esxi:
+  ipaddr: "192.168.1.200"
+  datastore: alldisks
+
+vm:
+  openstack:
+    name: openstack
+    ipaddr: "192.168.1.250"
+    macaddr: "00:50:56:01:03:00"
+    disk: sda
+
+
+router: 
+  ipaddr: "192.168.1.1"

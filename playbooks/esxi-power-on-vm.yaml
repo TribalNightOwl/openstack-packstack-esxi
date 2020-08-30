@@ -1,0 +1,10 @@
+---
+- hosts: esxi
+  tasks:
+  - include_vars:
+      file: vars.yaml
+
+  - name: boot the openstack node
+    shell: |
+      VMID=$(vim-cmd vmsvc/getallvms|grep {{ vm.openstack.name }} | cut -f1 -d ' ')
+      vim-cmd vmsvc/power.on $VMID

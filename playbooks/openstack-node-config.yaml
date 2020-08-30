@@ -1,0 +1,92 @@
+---
+- hosts: openstack
+  tasks:
+
+  - name: update all
+    dnf:
+      name: '*'
+      state: latest
+      update_cache: yes
+
+  - name: install centos-release-openstack-ussuri
+    dnf:
+      name: centos-release-openstack-ussuri
+      state: latest
+      update_cache: yes
+
+  - name: Enable PowerTools repo
+    shell: |
+      dnf config-manager --enable PowerTools
+
+  - name: update all
+    dnf:
+      name: '*'
+      state: latest
+      update_cache: yes
+
+  - name: install openstack-packstack
+    dnf:
+      name: openstack-packstack
+      state: latest
+      update_cache: yes
+
+  - name: install network-scripts
+    dnf:
+      name: network-scripts
+      state: latest
+      update_cache: yes
+
+  - name: install ansible
+    dnf:
+      name: ansible
+      state: latest
+      update_cache: yes
+
+  - name: install tmux
+    dnf:
+      name: tmux
+      state: latest
+      update_cache: yes
+
+  - name: set LANG in /etc/environment
+    lineinfile:
+      path: /etc/environment
+      line: LANG=en_US.utf-8 
+
+  - name: set LC_ALL in /etc/environment
+    lineinfile:
+      path: /etc/environment
+      line: LC_ALL=en_US.utf-8
+
+  - name: stop and disable firewalld
+    systemd:
+      name: firewalld
+      state: stopped
+      enabled: no
+
+  - name: stop and disable NetworkManager
+    systemd:
+      name: NetworkManager
+      state: stopped
+      enabled: no
+
+  - name: start and enable network
+    systemd:
+      name: network
+      state: started
+      enabled: yes
+
+  - name: Disable SELinux
+    selinux:
+      state: disabled
+
+  - name: Install PackStack
+    shell: |
+      packstack --allinone
+
+  - name: Fetch keystonerc_admin file
+    fetch:
+      src: keystonerc_admin
+      dest: ../keystonerc_admin
+      flat: yes
+      mode: 0666

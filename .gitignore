@@ -1,0 +1,6 @@
+.env
+config.sh
+deploy-openstack.sh
+ks.cfg
+keystonerc_admin
+terraform

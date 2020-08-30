@@ -1,0 +1,35 @@
+---
+- hosts: localhost
+  tasks:
+  - include_vars:
+      file: vars.yaml
+
+  - name: Create kickstart file
+    template:
+      src: ../templates/ks.cfg.j2
+      dest: ../ks.cfg
+
+  - name: Add root password to kickstart file
+    lineinfile:
+      path: ../files/ks.cfg
+      line: "rootpw --plaintext {{ ansible_env.OPENSTACK_NODE_ROOT_PASSWORD }}"
+      insertafter: '^firstboot'
+      create: yes
+
+  - name: Add ssh key to kickstart file
+    lineinfile:
+      path: ../files/ks.cfg
+      line: "sshkey --username=root \"{{ ansible_env.PUBSSHKEY }}\""
+      insertafter: '^rootpw'
+      create: yes
+
+  - name: Create config script
+    template:
+      src: ../templates/config.sh.j2
+      dest: ../config.sh
+
+  - name: Create deployment script
+    template:
+      src: ../templates/deploy-openstack.sh.j2
+      dest: ../deploy-openstack.sh
+      mode: 0755
