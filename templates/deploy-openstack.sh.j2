@@ -36,5 +36,6 @@ ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${OPENSTACKNODE}" || true
 ssh-keyscan -H ${OPENSTACKNODE} >> ${HOME}/.ssh/known_hosts
 
 docker_run /files "ansible-playbook playbooks/openstack-node-config.yaml"
+docker_run /files "ansible-playbook playbooks/openstack-test.yaml"
 
 printf "\nhttp://{{ vm.openstack.ipaddr }}\n"

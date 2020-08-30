@@ -1,0 +1,20 @@
+---
+- hosts: openstack
+  tasks:
+
+  - name: Download cirros image
+    get_url:
+      url: http://download.cirros-cloud.net/0.5.1/cirros-0.5.1-x86_64-disk.img
+      dest: ./
+      mode: '0440'
+
+  - name: Install cirros image
+    shell: |
+      source /root/keystonerc_admin
+      openstack image delete cirros
+      openstack image create --disk-format qcow2 --container-format bare --public --file cirros-0.5.1-x86_64-disk.img  cirros
+
+  - name: Launch instance
+    shell: |
+      source /root/keystonerc_admin
+      openstack server create --flavor m1.tiny --image cirros testvm01
