@@ -11,14 +11,14 @@
 
   - name: Add root password to kickstart file
     lineinfile:
-      path: ../files/ks.cfg
+      path: ../ks.cfg
       line: "rootpw --plaintext {{ ansible_env.OPENSTACK_NODE_ROOT_PASSWORD }}"
       insertafter: '^firstboot'
       create: yes
 
   - name: Add ssh key to kickstart file
     lineinfile:
-      path: ../files/ks.cfg
+      path: ../ks.cfg
       line: "sshkey --username=root \"{{ ansible_env.PUBSSHKEY }}\""
       insertafter: '^rootpw'
       create: yes
