@@ -58,6 +58,11 @@
       path: /etc/environment
       line: LC_ALL=en_US.utf-8
 
+  - name: set /etc/hosts
+    lineinfile:
+      path: /etc/hosts
+      line: "{{ vm.openstack.ipaddr }} {{ vm.openstack.name }}"
+
   - name: stop and disable firewalld
     systemd:
       name: firewalld
@@ -89,4 +94,8 @@
       src: keystonerc_admin
       dest: ../keystonerc_admin
       flat: yes
-      mode: 0666
+
+  - name: Open permissions for keystonerc_admin
+    file:
+      path: keystonerc_admin
+      mode: '0666'
